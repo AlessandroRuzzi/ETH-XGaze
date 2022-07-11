@@ -118,7 +118,8 @@ class Trainer(object):
         for i, (input_img, target) in enumerate(data_loader):
             input_var = torch.autograd.Variable(input_img.float().cuda())
             target_var = torch.autograd.Variable(target.float().cuda())
-
+            print(input_img.shape)
+            print(target.shape)
             # train gaze net
             pred_gaze= self.model(input_var)
 
