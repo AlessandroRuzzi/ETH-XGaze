@@ -17,8 +17,5 @@ class gaze_network(nn.Module):
         feature = self.gaze_fc(feature)
         gaze = feature[:,:2]
         head = feature [:,2:]
-        print(feature)
-        print(gaze)
-        print(head)
 
         return gaze, head
