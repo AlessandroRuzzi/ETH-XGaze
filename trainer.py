@@ -113,33 +113,40 @@ class Trainer(object):
         batch_time = AverageMeter()
         errors = AverageMeter()
         losses_gaze = AverageMeter()
+        losses_head = AverageMeter()
 
         tic = time.time()
-        for i, (input_img, target) in enumerate(data_loader):
+        for i, (input_img, target_gaze, target_head) in enumerate(data_loader):
             input_var = torch.autograd.Variable(input_img.float().cuda())
-            target_var = torch.autograd.Variable(target.float().cuda())
+            target_var_gaze = torch.autograd.Variable(target_gaze.float().cuda())
+            target_var_head = torch.autograd.Variable(target_head.float().cuda())
             #print(input_img.shape)
             #print(target.shape)
             # train gaze net
-            pred_gaze= self.model(input_var)
+            pred_gaze, pred_head = self.model(input_var)
 
-            gaze_error_batch = np.mean(angular_error(pred_gaze.cpu().data.numpy(), target_var.cpu().data.numpy()))
-            errors.update(gaze_error_batch.item(), input_var.size()[0])
+            gaze_error_batch = np.mean(angular_error(pred_gaze.cpu().data.numpy(), target_var_gaze.cpu().data.numpy()))
+            head_error_batch = np.mean(angular_error(pred_head.cpu().data.numpy(), target_var_head.cpu().data.numpy()))
+            errors.update(gaze_error_batch.item() + head_error_batch.item(), input_var.size()[0])
 
-            loss_gaze = F.l1_loss(pred_gaze, target_var)
+            loss_gaze = F.l1_loss(pred_gaze, target_var_gaze)
+            loss_head = F.l1_loss(pred_head, target_var_head)
+            loss_total = loss_head + loss_gaze
             self.optimizer.zero_grad()
-            loss_gaze.backward()
+            loss_total.backward()
             self.optimizer.step()
             losses_gaze.update(loss_gaze.item(), input_var.size()[0])
+            losses_head.update(loss_head.item(), input_var.size()[0])
 
             if i % self.print_freq == 0:
                 self.writer.add_scalar('Loss/gaze', losses_gaze.avg, self.train_iter)
+                self.writer.add_scalar('Loss/head', losses_head.avg, self.train_iter)
 
             # report information
             if i % self.print_freq == 0 and i is not 0:
                 print('--------------------------------------------------------------------')
-                msg = "train error: {:.3f} - loss_gaze: {:.5f}"
-                print(msg.format(errors.avg, losses_gaze.avg))
+                msg = "train error: {:.3f} - loss_gaze: {:.5f} - loss_head: {:.5f}"
+                print(msg.format(errors.avg, losses_gaze.avg, losses_head.avg))
 
                 # measure elapsed time
                 print('iteration ', self.train_iter)

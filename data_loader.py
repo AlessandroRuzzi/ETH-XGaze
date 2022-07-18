@@ -136,7 +136,9 @@ class GazeDataset(Dataset):
         if self.is_load_label:
             gaze_label = self.hdf['face_gaze'][idx, :]
             gaze_label = gaze_label.astype('float')
-            return image, gaze_label
+            head_label = self.hdf['face_head_pose'][idx, :]
+            head_label = head_label.astype('float')
+            return image, gaze_label, head_label
         else:
             return image
 

@@ -8,12 +8,16 @@ class gaze_network(nn.Module):
         self.gaze_network = resnet50(pretrained=True)
 
         self.gaze_fc = nn.Sequential(
-            nn.Linear(2048, 2),
+            nn.Linear(2048, 4),
         )
 
     def forward(self, x):
         feature = self.gaze_network(x)
         feature = feature.view(feature.size(0), -1)
-        gaze = self.gaze_fc(feature)
+        gaze = self.gaze_fc(feature[:2])
+        print(feature)
+        print(gaze)
+        head = self.gaze_fc(feature[2:])
+        print(head)
 
-        return gaze
+        return gaze, head
