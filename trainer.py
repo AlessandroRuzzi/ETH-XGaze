@@ -12,7 +12,7 @@ import time
 import numpy as np
 
 from utils import AverageMeter, angular_error
-from model import gaze_network
+from new_model import gaze_network
 import shutil
 
 class Trainer(object):
@@ -202,7 +202,7 @@ class Trainer(object):
         Save a copy of the model
         """
         if add is not None:
-            filename = add + '_head_ckpt.pth.tar'
+            filename = add + '_512_ckpt.pth.tar'
         else:
             filename ='ckpt.pth.tar'
         ckpt_path = os.path.join(self.ckpt_dir, filename)

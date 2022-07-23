@@ -15,7 +15,7 @@ def add_argument_group(name):
 
 # data params
 data_arg = add_argument_group('Data Params')
-data_arg.add_argument('--data_dir', type=str, default='/data/data2/aruzzi',
+data_arg.add_argument('--data_dir', type=str, default='/data/data2/aruzzi/subjects',
                       help='Directory of the data')
 data_arg.add_argument('--batch_size', type=int, default=200,
                       help='# of images in each batch of data')
@@ -27,7 +27,7 @@ data_arg.add_argument('--num_workers', type=int, default=0,
 train_arg = add_argument_group('Training Params')
 train_arg.add_argument('--is_train', type=str2bool, default=True,
                        help='Whether to train or test the model')
-train_arg.add_argument('--epochs', type=int, default=25,
+train_arg.add_argument('--epochs', type=int, default=100,
                        help='# of epochs to train for')
 train_arg.add_argument('--init_lr', type=float, default=0.0001,
                        help='Initial learning rate value')
