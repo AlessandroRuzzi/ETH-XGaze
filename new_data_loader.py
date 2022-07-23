@@ -314,7 +314,7 @@ class GazeDataset(Dataset):
         kernel_2 = np.ones((3, 3), dtype=np.uint8)
         face_mask = cv2.erode(face_mask, kernel_2, iterations=2)
 
-
+        face_mask = torch.from_numpy(face_mask)
         nonhead_mask = face_mask < 0.5
         nonhead_mask_c3b = nonhead_mask.expand(3, -1, -1)
         image[nonhead_mask_c3b] = 1.0
