@@ -50,7 +50,7 @@ def get_train_loader(
     """
 
     # load dataset
-    refer_list_file = os.path.join("data/eth_xgaze", "train_test_split.json")
+    refer_list_file = os.path.join("data/data2/aruzzi", "train_test_split.json")
     print("load the train file list from: ", refer_list_file)
 
     with open(refer_list_file, "r") as f:
@@ -88,7 +88,7 @@ def get_val_loader(
     """
 
     # load dataset
-    refer_list_file = os.path.join("data/eth_xgaze", "train_test_split.json")
+    refer_list_file = os.path.join("data/data2/aruzzi", "train_test_split.json")
     print("load the val file list from: ", refer_list_file)
 
     with open(refer_list_file, "r") as f:
