@@ -257,7 +257,7 @@ class GazeDataset(Dataset):
         self.index_fix = index
 
     def find_image(self,index):
-        counter = 0
+        counter_images = 0
         for i in range(1000):
             if i % 18 in [11, 12, 13, 14, 15]:
                     continue
