@@ -27,7 +27,7 @@ data_arg.add_argument('--num_workers', type=int, default=0,
 train_arg = add_argument_group('Training Params')
 train_arg.add_argument('--is_train', type=str2bool, default=True,
                        help='Whether to train or test the model')
-train_arg.add_argument('--epochs', type=int, default=100,
+train_arg.add_argument('--epochs', type=int, default=25,
                        help='# of epochs to train for')
 train_arg.add_argument('--init_lr', type=float, default=0.0001,
                        help='Initial learning rate value')
@@ -42,7 +42,7 @@ misc_arg.add_argument('--use_gpu', type=str2bool, default=True,
                       help="Whether to run on the GPU")
 misc_arg.add_argument('--pre_trained_model_path', type=str, default='./ckpt/epoch_24_ckpt.pth.tar',
                       help='Directory in which to save model checkpoints')
-misc_arg.add_argument('--print_freq', type=int, default=300,
+misc_arg.add_argument('--print_freq', type=int, default=1000,
                       help='How frequently to print training details')
 misc_arg.add_argument('--ckpt_dir', type=str, default='./ckpt',
                       help='Directory in which to save model checkpoints')
