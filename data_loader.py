@@ -11,16 +11,16 @@ from typing import List
 trans_train = transforms.Compose([
         transforms.ToPILImage(),
         transforms.ToTensor(),  # this also convert pixel value from [0,255] to [0,1]
-        #transforms.Normalize(mean=[0.485, 0.456, 0.406],
-        #                     std=[0.229, 0.224, 0.225]),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                             std=[0.229, 0.224, 0.225]),
         transforms.Resize(size=(224,224)),
     ])
 
 trans = transforms.Compose([
         transforms.ToPILImage(),
         transforms.ToTensor(),  # this also convert pixel value from [0,255] to [0,1]
-        #transforms.Normalize(mean=[0.485, 0.456, 0.406],
-        #                     std=[0.229, 0.224, 0.225]),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                             std=[0.229, 0.224, 0.225]),
         transforms.Resize(size=(224,224)),
     ])
 
