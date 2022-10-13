@@ -127,7 +127,7 @@ class GazeDataset(Dataset):
         assert self.hdf.swmr_mode
 
         self.hdf_nerf = h5py.File(
-            os.path.join("/data/data2/aruzzi/xgaze_subjects", self.selected_keys[key]),
+            os.path.join("/data/data2/aruzzi/xgaze_subjects", "xgaze_" + self.selected_keys[key]),
             "r",
             swmr=True,
         )
