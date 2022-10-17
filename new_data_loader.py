@@ -266,7 +266,7 @@ class GazeDataset(Dataset):
         image[nonhead_mask_c3b] = 1.0
 
         image = normalize(
-                (image.detach().cpu().numpy() * 255).astype(np.uint8),
+                (image.detach().cpu().permute(1,2,0).numpy() * 255).astype(np.uint8),
                 self.cam_matrix[int(cam_ind)],
                 self.cam_distortion[int(cam_ind)],
                 self.face_model_load,
