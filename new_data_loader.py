@@ -267,8 +267,8 @@ class GazeDataset(Dataset):
 
         image = normalize(
                 (image.detach().cpu().numpy() * 255).astype(np.uint8),
-                self.cam_matrix[cam_ind],
-                self.cam_distortion[cam_ind],
+                self.cam_matrix[int(cam_ind)],
+                self.cam_distortion[int(cam_ind)],
                 self.face_model_load,
                 ldms,
                 224,
