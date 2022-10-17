@@ -17,7 +17,7 @@ def add_argument_group(name):
 data_arg = add_argument_group('Data Params')
 data_arg.add_argument('--data_dir', type=str, default='/data/data2/aruzzi',
                       help='Directory of the data')
-data_arg.add_argument('--batch_size', type=int, default=50,
+data_arg.add_argument('--batch_size', type=int, default=200,
                       help='# of images in each batch of data')
 data_arg.add_argument('--num_workers', type=int, default=0,
                       help='# of subprocesses to use for data loading')
