@@ -6,22 +6,24 @@ import os
 import json
 import random
 from typing import List
+import torch
+import cv2
 
-trans_train = transforms.Compose([
-        transforms.ToPILImage(),
-        transforms.ToTensor(),  # this also convert pixel value from [0,255] to [0,1]
-        transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                             std=[0.229, 0.224, 0.225]),
-        transforms.Resize(size=(224, 224)),
-    ])
 
 trans = transforms.Compose([
         transforms.ToPILImage(),
         transforms.ToTensor(),  # this also convert pixel value from [0,255] to [0,1]
-        transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                             std=[0.229, 0.224, 0.225]),
-        transforms.Resize(size=(224,224)),
+        #transforms.Normalize(mean=[0.485, 0.456, 0.406],
+        #                     std=[0.229, 0.224, 0.225]),
+        #transforms.Resize(size=(224,224)),
     ])
+
+trans_eval = transforms.Compose(
+    [
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        transforms.Resize(size=(224,224))
+    ]
+)
 
 
 def get_train_loader(data_dir,
@@ -133,9 +135,20 @@ class GazeDataset(Dataset):
         )
 
         # Get face image
-        image = self.hdf['face_patch'][idx, :]
+        image = self.hdf_nerf['face_patch'][idx, :]
         image = image[:, :, [2, 1, 0]]  # from BGR to RGB
         image = self.transform(image)
+
+        face_mask = self.hdf_nerf["head_mask"][idx, :]
+        kernel_2 = np.ones((3, 3), dtype=np.uint8)
+        face_mask = cv2.erode(face_mask, kernel_2, iterations=2)
+
+        face_mask = torch.from_numpy(face_mask)
+        nonhead_mask = face_mask < 0.5
+        nonhead_mask_c3b = nonhead_mask.expand(3, -1, -1)
+        image[nonhead_mask_c3b] = 1.0
+
+        image = trans_eval(image)
 
         # Get labels
         if self.is_load_label:
