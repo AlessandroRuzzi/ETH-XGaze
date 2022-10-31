@@ -202,7 +202,7 @@ class Trainer(object):
         Save a copy of the model
         """
         if add is not None:
-            filename = add + '_resnet_white_ckpt.pth.tar'
+            filename = add + '_resnet_correct_ckpt.pth.tar'
         else:
             filename ='ckpt.pth.tar'
         ckpt_path = os.path.join(self.ckpt_dir, filename)
