@@ -10,20 +10,19 @@ import torch
 import cv2
 
 
-trans = transforms.Compose([
-        transforms.ToPILImage(),
-        transforms.ToTensor(),  # this also convert pixel value from [0,255] to [0,1]
-        #transforms.Normalize(mean=[0.485, 0.456, 0.406],
-        #                     std=[0.229, 0.224, 0.225]),
-        #transforms.Resize(size=(224,224)),
-    ])
-
 trans_eval = transforms.Compose(
     [
-        transforms.ToPILImage(),
-        transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         transforms.Resize(size=(224,224))
+    ]
+)
+
+trans = transforms.Compose(
+    [
+        transforms.ToPILImage(),
+        transforms.ToTensor(),  # this also convert pixel value from [0,255] to [0,1]
+        #transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        #transforms.Resize(size=(224,224))
     ]
 )
 
@@ -264,7 +263,7 @@ class GazeDataset(Dataset):
         nonhead_mask = face_mask < 0.5
         nonhead_mask_c3b = nonhead_mask.expand(3, -1, -1)
         image[nonhead_mask_c3b] = 1.0
-
+        """
         image = normalize(
                 (image.detach().cpu().permute(1,2,0).numpy() * 255).astype(np.uint8),
                 self.cam_matrix[int(cam_ind)],
@@ -273,9 +272,9 @@ class GazeDataset(Dataset):
                 ldms,
                 224,
         )
-
+        """
         image = trans_eval(image)
-
+        
         # Get labels
         if self.is_load_label:
             gaze_label = self.hdf['face_gaze'][idx, :]
